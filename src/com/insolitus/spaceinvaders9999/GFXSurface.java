@@ -81,7 +81,7 @@ public class GFXSurface extends Activity implements OnTouchListener {
 		// Getting display size
 		DisplayMetrics metrics = this.getResources().getDisplayMetrics();
 		height = metrics.heightPixels;
-		width = metrics.widthPixels;  
+		width = metrics.widthPixels;
 		Log.i("Dimensions", "width: " + width);
 		missileSpeed = (float) (0.007 * height);
 
@@ -93,7 +93,7 @@ public class GFXSurface extends Activity implements OnTouchListener {
 
 		// Players ship resizing
 		scaleH = (float) playerShip.getHeight() / (float) (height / 11);
-		newWidth = Math.round(playerShip.getWidth() / scaleH);                                     
+		newWidth = Math.round(playerShip.getWidth() / scaleH);
 		newHeight = Math.round(playerShip.getHeight() / scaleH);
 		playerShip = Bitmap.createScaledBitmap(playerShip, newWidth, newHeight, true);
 
@@ -102,6 +102,12 @@ public class GFXSurface extends Activity implements OnTouchListener {
 		newWidth = Math.round(missile.getWidth() / scaleH);
 		newHeight = Math.round(missile.getHeight() / scaleH);
 		missile = Bitmap.createScaledBitmap(missile, newWidth, newHeight, true);
+
+		// Enemy Ship resizing
+		scaleH = (float) enemyShip.getHeight() / (float) (height / 30);
+		newWidth = Math.round(enemyShip.getWidth() / scaleH);
+		newHeight = Math.round(enemyShip.getHeight() / scaleH);
+		enemyShip = Bitmap.createScaledBitmap(enemyShip, newWidth, newHeight, true);
 	}
 
 	private void initSounds() {
