@@ -1,7 +1,6 @@
 package com.insolitus.spaceinvaders9999;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -48,7 +47,6 @@ public class GFXSurface extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		ourSV = new MBBSurface(this);
 		ourSV.setOnTouchListener(this);
-		setContentView(R.layout.loading);
 		initialize();
 		setContentView(ourSV);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

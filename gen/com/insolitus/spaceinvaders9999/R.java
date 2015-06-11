@@ -41,9 +41,10 @@ public final class R {
         public static final int missiletest=0x7f020010;
         public static final int player_ship=0x7f020011;
         public static final int plus=0x7f020012;
-        public static final int splash=0x7f020013;
-        public static final int ss1=0x7f020014;
-        public static final int ss2=0x7f020015;
+        public static final int progresbarcolor=0x7f020013;
+        public static final int splash=0x7f020014;
+        public static final int ss1=0x7f020015;
+        public static final int ss2=0x7f020016;
     }
     public static final class id {
         public static final int Button01=0x7f090003;
@@ -59,7 +60,7 @@ public final class R {
         public static final int etName=0x7f090008;
         public static final int etPhone=0x7f09000c;
         public static final int etSurname=0x7f09000a;
-        public static final int progressBar1=0x7f090011;
+        public static final int pb_progressbar=0x7f090011;
         public static final int relativeLayout1=0x7f090001;
         public static final int tbPassword=0x7f090014;
         public static final int textView1=0x7f090000;
