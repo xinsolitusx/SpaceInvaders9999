@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="4000"
+    android:fromDegrees="0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:toDegrees="720" >
 
-    <item android:id="@android:id/background">
-        <shape>
-            <corners android:radius="5dip" />
-            <solid android:color="@android:color/transparent" />
-        </shape>
-    </item>
-    <item android:id="@android:id/progress">
-        <clip>
-            <shape>
-                <corners android:radius="5dip" />
-                <solid android:color="#35e9e2" />
-            </shape>
-        </clip>
-    </item>
+    <shape
+        android:innerRadius="20dp"
+        android:shape="ring"
+        android:thickness="30dp"
+        android:useLevel="false" >
+        <size
+            android:height="100dp"
+            android:width="100dp" />
 
-</layer-list>
+        <gradient
+            android:centerColor="#43e8d8"
+            android:centerY="0.5"
+            android:endColor="#b3ecec"
+            android:startColor="#3bd6c6"
+            android:type="sweep"
+            android:useLevel="false" />
+    </shape>
+
+</rotate>

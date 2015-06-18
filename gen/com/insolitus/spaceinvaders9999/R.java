@@ -23,28 +23,37 @@ public final class R {
     }
     public static final class drawable {
         public static final int alienblur=0x7f020000;
-        public static final int bg1=0x7f020001;
-        public static final int bg2=0x7f020002;
-        public static final int bluryellow=0x7f020003;
-        public static final int bomb=0x7f020004;
-        public static final int boss1=0x7f020005;
-        public static final int bullet=0x7f020006;
-        public static final int enemy_1=0x7f020007;
-        public static final int enemy_2=0x7f020008;
-        public static final int enemy_3=0x7f020009;
-        public static final int greenball=0x7f02000a;
-        public static final int ic_launcher=0x7f02000b;
-        public static final int launcher=0x7f02000c;
-        public static final int miss1=0x7f02000d;
-        public static final int missile1=0x7f02000e;
-        public static final int missile2=0x7f02000f;
-        public static final int missiletest=0x7f020010;
-        public static final int player_ship=0x7f020011;
-        public static final int plus=0x7f020012;
-        public static final int progresbarcolor=0x7f020013;
-        public static final int splash=0x7f020014;
-        public static final int ss1=0x7f020015;
-        public static final int ss2=0x7f020016;
+        public static final int background=0x7f020001;
+        public static final int bg1=0x7f020002;
+        public static final int bg2=0x7f020003;
+        public static final int bluryellow=0x7f020004;
+        public static final int bomb=0x7f020005;
+        public static final int boss1=0x7f020006;
+        public static final int bt1=0x7f020007;
+        public static final int bt2=0x7f020008;
+        public static final int bullet=0x7f020009;
+        public static final int enemy_1=0x7f02000a;
+        public static final int enemy_2=0x7f02000b;
+        public static final int enemy_3=0x7f02000c;
+        public static final int greenball=0x7f02000d;
+        public static final int ic_launcher=0x7f02000e;
+        public static final int launcher=0x7f02000f;
+        public static final int miss1=0x7f020010;
+        public static final int missile1=0x7f020011;
+        public static final int missile2=0x7f020012;
+        public static final int missiletest=0x7f020013;
+        public static final int newgame=0x7f020014;
+        public static final int newgamebutton=0x7f020015;
+        public static final int newgamepressed=0x7f020016;
+        public static final int ng=0x7f020017;
+        public static final int ngp=0x7f020018;
+        public static final int player_ship=0x7f020019;
+        public static final int plus=0x7f02001a;
+        public static final int progresbarcolor=0x7f02001b;
+        public static final int splash=0x7f02001c;
+        public static final int splashtest=0x7f02001d;
+        public static final int ss1=0x7f02001e;
+        public static final int ss2=0x7f02001f;
     }
     public static final class id {
         public static final int Button01=0x7f090003;
@@ -60,8 +69,8 @@ public final class R {
         public static final int etName=0x7f090008;
         public static final int etPhone=0x7f09000c;
         public static final int etSurname=0x7f09000a;
-        public static final int pb_progressbar=0x7f090011;
         public static final int relativeLayout1=0x7f090001;
+        public static final int startNewGamebtn=0x7f090011;
         public static final int tbPassword=0x7f090014;
         public static final int textView1=0x7f090000;
         public static final int textView2=0x7f090005;
@@ -75,8 +84,9 @@ public final class R {
         public static final int activity_start=0x7f030000;
         public static final int email=0x7f030001;
         public static final int loading=0x7f030002;
-        public static final int splash=0x7f030003;
-        public static final int text=0x7f030004;
+        public static final int menu=0x7f030003;
+        public static final int splash=0x7f030004;
+        public static final int text=0x7f030005;
     }
     public static final class menu {
         public static final int start=0x7f080000;

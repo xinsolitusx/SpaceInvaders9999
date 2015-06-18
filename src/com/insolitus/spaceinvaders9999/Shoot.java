@@ -1,41 +1,35 @@
 package com.insolitus.spaceinvaders9999;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.media.AudioManager;
-import android.media.SoundPool;
+
 
 public class Shoot {	
 	
 	private boolean missileStartLoc = true;
 	private float x = 0, y = 0, missileLocation = 0;
 	
-	public void drawShot(Canvas canvas, float weight, float height, float shipHeight, float shipOffset, float missileSpeed, Bitmap image, SoundPool sP, int shotSound){
+	public void drawShot(Canvas canvas, float shipOffset, float missileSpeed){
 		
 		
 		//Players shoot
-		if (!missileStartLoc){						
-			y = (float) (0.82*height-shipHeight/2 - image.getHeight());
-		}
-		else{
-			x = weight/2 + shipOffset - image.getWidth()/2;
-			y = (float) (0.82*height - shipHeight/2 - image.getHeight());
-			if (shotSound != 0){
-				sP.play(shotSound, 0.2f, 0.2f, 0, 0, 1);
+		if (missileStartLoc){			
+			
+			x = SISingleton.getInstance().width/2 + shipOffset - SISingleton.getInstance().missile.getWidth()/2;
+			y = (float) (0.82*SISingleton.getInstance().height - SISingleton.getInstance().playerShip.getHeight()/2 - SISingleton.getInstance().missile.getHeight());
+			if (SISingleton.getInstance().shotSound != 0){
+				SISingleton.getInstance().sp.play(SISingleton.getInstance().shotSound, 0.2f, 0.2f, 0, 0, 1);
 			}			
 			missileStartLoc = false;
 		}
 			
 		if (y - missileLocation >= 0){
-			canvas.drawBitmap(image, x, y - missileLocation, null);	
+			canvas.drawBitmap(SISingleton.getInstance().missile, x, y - missileLocation, null);	
 			missileLocation += missileSpeed;
 		}
 		else {
 			missileLocation = 0;
-			missileStartLoc = true;
-			
-		}
-		
+			missileStartLoc = true;			
+		}		
 	}
 
 	public float getY() {

@@ -2,19 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/splash"
+    android:background="@drawable/splashtest"
     android:orientation="vertical" >
 
-    <ProgressBar
-        android:id="@+id/pb_progressbar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+    <ProgressBar        
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:progressDrawable="@drawable/progresbarcolor"/>    
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="70dp"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/progresbarcolor" />
 
 </RelativeLayout>
