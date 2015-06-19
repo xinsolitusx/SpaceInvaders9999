@@ -1,7 +1,10 @@
 package com.insolitus.spaceinvaders9999;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,13 +18,16 @@ import android.view.WindowManager;
 public class SpaceInvSurface extends Activity implements OnTouchListener {
 
 	SpaceInvSurfaceView gameView;
-	private float x, playersShipOffset, missileSpeed, offset = 0;
-	private boolean moveThreadRunning = false, cancelMoveThread = false, left = true, right = false;
+	private int backKeyPressed = 0;
+	private float x, playersShipOffset, missileSpeed;
+	private boolean moveThreadRunning = false, cancelMoveThread = false;
 
 	private Shoot sH1 = new Shoot();
 	private Shoot sH2 = new Shoot();
 	private Shoot sH3 = new Shoot();
 	private Shoot sH4 = new Shoot();
+
+	private Levels level = new Levels();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,9 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 
 		case MotionEvent.ACTION_DOWN:
 		case MotionEvent.ACTION_POINTER_DOWN:
+
+			gameView.resume();
+			backKeyPressed = 0;
 
 			if (event.getPointerCount() > 1) {
 				x = event.getX(event.findPointerIndex(event.getPointerId(event.getActionIndex())));
@@ -107,7 +116,7 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 
 						}
 					} finally {
-						//moveThreadRunning = false;
+						// moveThreadRunning = false;
 						cancelMoveThread = false;
 					}
 				}
@@ -187,62 +196,37 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 				canvas.drawBitmap(SISingleton.getInstance().playerShip, SISingleton.getInstance().width / 2 - SISingleton.getInstance().playerShip.getWidth() / 2 + playersShipOffset,
 						(float) (0.82 * SISingleton.getInstance().height - SISingleton.getInstance().playerShip.getHeight() / 2), null);
 
-				// Players shots
-				sH1.drawShot(canvas, playersShipOffset, missileSpeed);
-				if (SISingleton.getInstance().getShotCount() >= 2) {
+				if (!level.startShooting()) {
 
-					if ((sH1.getY() < SISingleton.getInstance().shotMaxRange) || (sH2.getY() != 0)) {
+					// Players shots
+					sH1.drawShot(canvas, playersShipOffset, missileSpeed);
+					if (SISingleton.getInstance().getShotCount() >= 2) {
 
-						// Log.i("SHooting", "SECOND_SHOT: " + sH2.getY());
-						sH2.drawShot(canvas, playersShipOffset, missileSpeed);
+						if ((sH1.getY() < SISingleton.getInstance().shotMaxRange) || (sH2.getY() != 0)) {
+
+							// Log.i("SHooting", "SECOND_SHOT: " + sH2.getY());
+							sH2.drawShot(canvas, playersShipOffset, missileSpeed);
+						}
 					}
-				}
-				if (SISingleton.getInstance().getShotCount() >= 3) {
+					if (SISingleton.getInstance().getShotCount() >= 3) {
 
-					if (((sH2.getY() != 0) && (sH2.getY() < SISingleton.getInstance().shotMaxRange)) || (sH3.getY() != 0)) {
+						if (((sH2.getY() != 0) && (sH2.getY() < SISingleton.getInstance().shotMaxRange)) || (sH3.getY() != 0)) {
 
-						// Log.i("SHooting", "THIRD_SHOT: " + sH3.getY() );
-						sH3.drawShot(canvas, playersShipOffset, missileSpeed);
+							// Log.i("SHooting", "THIRD_SHOT: " + sH3.getY() );
+							sH3.drawShot(canvas, playersShipOffset, missileSpeed);
+						}
 					}
-				}
-				if (SISingleton.getInstance().getShotCount() == 4) {
+					if (SISingleton.getInstance().getShotCount() == 4) {
 
-					if (((sH3.getY() != 0) && (sH3.getY() < SISingleton.getInstance().shotMaxRange)) || (sH4.getY() != 0)) {
+						if (((sH3.getY() != 0) && (sH3.getY() < SISingleton.getInstance().shotMaxRange)) || (sH4.getY() != 0)) {
 
-						// Log.i("SHooting", "FORTH_SHOT: " + sH4.getY() );
-						sH4.drawShot(canvas, playersShipOffset, missileSpeed);
-					}
-				}
-
-				canvas.drawBitmap(SISingleton.getInstance().enemyShip, (float) (0.1 * SISingleton.getInstance().width) + offset, (float) (0.1 * SISingleton.getInstance().height), null);
-				canvas.drawBitmap(SISingleton.getInstance().enemyShip,
-						(float) (0.1 * SISingleton.getInstance().width) + SISingleton.getInstance().emptySpace + SISingleton.getInstance().enemyShip.getWidth() + offset,
-						(float) (0.1 * SISingleton.getInstance().height), null);
-				canvas.drawBitmap(SISingleton.getInstance().enemyShip, (float) (0.1 * SISingleton.getInstance().width) + 2 * SISingleton.getInstance().emptySpace + 2
-						* SISingleton.getInstance().enemyShip.getWidth() + offset, (float) (0.1 * SISingleton.getInstance().height), null);
-				canvas.drawBitmap(SISingleton.getInstance().enemyShip, (float) (0.1 * SISingleton.getInstance().width) + 3 * SISingleton.getInstance().emptySpace + 3
-						* SISingleton.getInstance().enemyShip.getWidth() + offset, (float) (0.1 * SISingleton.getInstance().height), null);
-				canvas.drawBitmap(SISingleton.getInstance().enemyShip, (float) (0.1 * SISingleton.getInstance().width) + 4 * SISingleton.getInstance().emptySpace + 4
-						* SISingleton.getInstance().enemyShip.getWidth() + offset, (float) (0.1 * SISingleton.getInstance().height), null);
-
-				if (left) {
-					if ((float) (0.1 * SISingleton.getInstance().width) + offset > 0) {
-						offset -= 1;
-					} else {
-						left = false;
-						right = true;
+							// Log.i("SHooting", "FORTH_SHOT: " + sH4.getY() );
+							sH4.drawShot(canvas, playersShipOffset, missileSpeed);
+						}
 					}
 				}
 
-				if (right) {
-					if ((float) (0.1 * SISingleton.getInstance().width) + 4 * SISingleton.getInstance().emptySpace + 5 * SISingleton.getInstance().enemyShip.getWidth() + offset < SISingleton
-							.getInstance().width) {
-						offset += 1;
-					} else {
-						left = true;
-						right = false;
-					}
-				}
+				level.drawEnemys(canvas);
 
 				/*
 				 * if (!missileStartLoc){ holdPlayersY = (float)
@@ -301,17 +285,51 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 	}
 
 	@Override
+	public void onBackPressed() {
+
+		backKeyPressed++;
+		if (backKeyPressed == 1) {
+			gameView.pause();
+			AlertDialog alertbox = new AlertDialog.Builder(this).setMessage("Do you want to return to menu and lose your progress?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+				// do something when the button is clicked
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					Intent openMenuActivity = new Intent(SpaceInvSurface.this, GameMenu.class);
+					startActivity(openMenuActivity);
+					gameView.resume();
+					finish();
+				}
+			}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+				// do something when the button is clicked
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					backKeyPressed = 0;
+					gameView.resume();
+				}
+			}).show();
+		} else {
+			backKeyPressed = 0;
+			gameView.resume();
+		}
+	}
+	
+	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
+		gameView.resume();		
 		super.onPause();
+		SISingleton.getInstance().pauseMusic(2);
 		gameView.pause();
 	}
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub		
 		super.onResume();
-		gameView.resume();
-	}
-
+		SISingleton.getInstance().resumeMusic(2);
+		gameView.resume();	
+		backKeyPressed = 0;
+	}	
 }

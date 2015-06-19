@@ -2,16 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/splashtest"
+    android:background="@drawable/logo"
     android:orientation="vertical" >
-
-    <ProgressBar        
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp"
-        android:indeterminate="true"
-        android:indeterminateDrawable="@drawable/progresbarcolor" />
 
 </RelativeLayout>

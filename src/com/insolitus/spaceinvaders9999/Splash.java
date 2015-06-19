@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 public class Splash extends Activity {
 
-	private MediaPlayer flashSong;
+	private MediaPlayer splashSong;
 	protected SIApplication app;
 	
 	@Override
@@ -16,8 +16,9 @@ public class Splash extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.loading);
-		flashSong = MediaPlayer.create(Splash.this, R.raw.beep8);
-		flashSong.start();
+		splashSong = MediaPlayer.create(Splash.this, R.raw.splash);
+		splashSong.setVolume(0.2f, 0.2f);
+		splashSong.start();
 		
 		new LoadViewTask().execute();
 	}
@@ -32,14 +33,15 @@ public class Splash extends Activity {
 			// Get the current thread's token
 			synchronized (this) {
 				
-				app = (SIApplication)getApplication();	
+				
 				// Putting thread to sleep for FPS increase
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				app = (SIApplication)getApplication();	
 			}
 			return null;
 		}		
@@ -58,8 +60,9 @@ public class Splash extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		flashSong.release();
+		splashSong.release();
 		finish();
 	}
 
+	
 }
