@@ -40,11 +40,4 @@ public class GameMenu extends Activity {
 		SISingleton.getInstance().pauseMusic(1);
 		super.onPause();
 	}
-	
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
 }

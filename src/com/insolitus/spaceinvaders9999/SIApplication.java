@@ -20,16 +20,19 @@ public class SIApplication extends Application {
 		DisplayMetrics metrics = this.getResources().getDisplayMetrics();
 		final float height = metrics.heightPixels;
 		final float width = metrics.widthPixels;
-		final Bitmap playerShip = BitmapFactory.decodeResource(getResources(), R.drawable.playerships_orange);
-		final Bitmap enemyShipBoss = BitmapFactory.decodeResource(getResources(), R.drawable.boss4);
-		final Bitmap enemyShip1 = BitmapFactory.decodeResource(getResources(), R.drawable.enemy5);
-		final Bitmap enemyShip2 = BitmapFactory.decodeResource(getResources(), R.drawable.enemy2);
-		final Bitmap enemyShip3 = BitmapFactory.decodeResource(getResources(), R.drawable.enemy8);
+		
+		final Bitmap playerShip = BitmapFactory.decodeResource(getResources(), R.drawable.playerships_orange);		
+		final Bitmap enemyShip1 = BitmapFactory.decodeResource(getResources(), R.drawable.enemyone);
+		final Bitmap enemyShip2 = BitmapFactory.decodeResource(getResources(), R.drawable.enemytwo);
+		final Bitmap enemyShip3 = BitmapFactory.decodeResource(getResources(), R.drawable.enemythree);
+		final Bitmap enemyShip4 = BitmapFactory.decodeResource(getResources(), R.drawable.enemyfour);
 		final Bitmap missile = BitmapFactory.decodeResource(getResources(), R.drawable.missiletest);
+		final Bitmap enemyMissile = BitmapFactory.decodeResource(getResources(), R.drawable.enemymissile);
 		final Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.backgorund1);
+		final Bitmap instructions = BitmapFactory.decodeResource(getResources(), R.drawable.instructions);
 
 		// Initialize the instance of MySingleton
-		SISingleton.initInstance(this, height, width, playerShip, enemyShipBoss, enemyShip1, enemyShip2, enemyShip3, missile, background);
+		SISingleton.initInstance(this, height, width, playerShip, enemyShip1, enemyShip2, enemyShip3, enemyShip4, missile, enemyMissile, background, instructions);
 	}
 
 }

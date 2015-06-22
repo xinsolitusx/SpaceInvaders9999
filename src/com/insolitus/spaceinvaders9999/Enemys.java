@@ -8,6 +8,7 @@ public class Enemys {
 	private boolean startLocation, left, right;
 	private float x, startY, finalY, offSetX, offSetY;
 	Bitmap enemyType;
+	private Shot enemyShot = new Shot();
 
 	public void setLocation(float xPos, float yStartPos, float yFinalPos, int eType) {
 
@@ -35,12 +36,22 @@ public class Enemys {
 		case 3:
 			enemyType = SISingleton.getInstance().enemyShipThree;
 			break;
+		case 4:
+			enemyType = SISingleton.getInstance().enemyShipFour;
+			break;
 		}
 	}
 
 	public boolean startAllocationFinnished() {
-
 		return this.startLocation;
+	}
+
+	public boolean missileFinnished() {		
+		return enemyShot.isMissileStartLoc();
+	}
+
+	public void setMissileFinnished(boolean restart) {
+		enemyShot.setMissileRestart(restart);
 	}
 
 	public void drawEnemy(Canvas canvas) {
@@ -57,6 +68,7 @@ public class Enemys {
 
 		} else {
 			canvas.drawBitmap(enemyType, x + offSetX, finalY, null);
+
 		}
 
 		if (left) {
@@ -77,6 +89,10 @@ public class Enemys {
 				right = false;
 			}
 		}
+	}
+
+	public void drawShot(Canvas canvas) {
+		enemyShot.drawShot(canvas, x + offSetX, finalY);
 	}
 
 }

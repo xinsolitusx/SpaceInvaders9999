@@ -2,6 +2,9 @@ package com.insolitus.spaceinvaders9999;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.Paint.Align;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -12,10 +15,12 @@ public class SISingleton {
 	private final static int MAX_VOLUME = 100;
 	private final static float volume = (float) (1 - (Math.log(MAX_VOLUME - 60) / Math.log(MAX_VOLUME)));
 	private static SISingleton instance;
+	public Typeface font;
 	public SoundPool sp;
 	public int shotSound = 0;
 	public final float height, width, shotMaxRange, emptySpace;
-	public final Bitmap playerShip, background, missile, enemyShipBoss, enemyShipOne, enemyShipTwo, enemyShipThree;
+	public final Bitmap playerShip, background, missile, enemyMissile, enemyShipOne, enemyShipTwo, enemyShipThree, enemyShipFour, instructions;
+	public Paint textPaint = new Paint();
 
 	private int shotCount = 1, loopSongLenght, menuSongLenght;
 
@@ -27,10 +32,11 @@ public class SISingleton {
 		this.shotCount = shotCount;
 	}
 
-	public static void initInstance(Context context, float h, float w, Bitmap plShip, Bitmap enemyBoss, Bitmap enemyOne, Bitmap enemyTwo, Bitmap enemyThree, Bitmap mi, Bitmap backGround) {
+	public static void initInstance(Context context, float h, float w, Bitmap plShip, Bitmap enemyOne, Bitmap enemyTwo, Bitmap enemyThree, Bitmap enemyFour, Bitmap pMissile, Bitmap eMissile,
+			Bitmap backGround, Bitmap instruct) {
 		if (instance == null) {
 			// Create the instance
-			instance = new SISingleton(context, h, w, plShip, enemyBoss, enemyOne, enemyTwo, enemyThree, mi, backGround);
+			instance = new SISingleton(context, h, w, plShip, enemyOne, enemyTwo, enemyThree, enemyFour, pMissile, eMissile, backGround, instruct);
 		}
 	}
 
@@ -39,7 +45,8 @@ public class SISingleton {
 		return instance;
 	}
 
-	private SISingleton(Context context, float h, float w, Bitmap plShip, Bitmap enemyBoss, Bitmap enemyOne, Bitmap enemyTwo, Bitmap enemyThree, Bitmap mi, Bitmap backGround) {
+	private SISingleton(Context context, float h, float w, Bitmap plShip, Bitmap enemyOne, Bitmap enemyTwo, Bitmap enemyThree, Bitmap enemyFour, Bitmap pMissile, Bitmap eMissile, Bitmap backGround,
+			Bitmap instruction) {
 		// Constructor hidden because this is a singleton
 
 		// Getting display size
@@ -54,6 +61,13 @@ public class SISingleton {
 		newHeight = Math.round(backGround.getHeight() / scale);
 		background = Bitmap.createScaledBitmap(backGround, newWidth, newHeight, true);
 
+		// Instructions resizing
+		scale = instruction.getWidth() / width;
+		newWidth = Math.round(instruction.getWidth() / scale);
+		scale = instruction.getHeight() / height;
+		newHeight = Math.round(instruction.getHeight() / scale);
+		instructions = Bitmap.createScaledBitmap(instruction, newWidth, newHeight, true);
+
 		// Players ship resizing
 		scale = plShip.getHeight() / (height / 11);
 		newWidth = Math.round(plShip.getWidth() / scale);
@@ -61,16 +75,16 @@ public class SISingleton {
 		playerShip = Bitmap.createScaledBitmap(plShip, newWidth, newHeight, true);
 
 		// Missile resizing
-		scale = mi.getHeight() / (height / 30);
-		newWidth = Math.round(mi.getWidth() / scale);
-		newHeight = Math.round(mi.getHeight() / scale);
-		missile = Bitmap.createScaledBitmap(mi, newWidth, newHeight, true);
+		scale = pMissile.getHeight() / (height / 35);
+		newWidth = Math.round(pMissile.getWidth() / scale);
+		newHeight = Math.round(pMissile.getHeight() / scale);
+		missile = Bitmap.createScaledBitmap(pMissile, newWidth, newHeight, true);
 
-		// Enemy Boss resizing
-		scale = enemyBoss.getHeight() / (height / 8);
-		newWidth = Math.round(enemyBoss.getWidth() / scale);
-		newHeight = Math.round(enemyBoss.getHeight() / scale);
-		enemyShipBoss = Bitmap.createScaledBitmap(enemyBoss, newWidth, newHeight, true);
+		// Enemy missile resizing
+		scale = eMissile.getHeight() / (height / 30);
+		newWidth = Math.round(eMissile.getWidth() / scale);
+		newHeight = Math.round(eMissile.getHeight() / scale);
+		enemyMissile = Bitmap.createScaledBitmap(eMissile, newWidth, newHeight, true);
 
 		// Enemy One resizing
 		scale = enemyOne.getWidth() / (width / 8);
@@ -90,6 +104,12 @@ public class SISingleton {
 		newHeight = Math.round(enemyThree.getHeight() / scale);
 		enemyShipThree = Bitmap.createScaledBitmap(enemyThree, newWidth, newHeight, true);
 
+		// Enemy Four resizing
+		scale = enemyFour.getWidth() / (width / 8);
+		newWidth = Math.round(enemyFour.getWidth() / scale);
+		newHeight = Math.round(enemyFour.getHeight() / scale);
+		enemyShipFour = Bitmap.createScaledBitmap(enemyFour, newWidth, newHeight, true);
+
 		// Players missile max range
 		shotMaxRange = (float) ((0.82 * height - playerShip.getHeight() / 2 - missile.getHeight()) - ((0.82 * height - playerShip.getHeight() / 2 - missile.getHeight()) / getShotCount()));
 
@@ -106,6 +126,12 @@ public class SISingleton {
 		menuSong = MediaPlayer.create(context, R.raw.menusong);
 		menuSong.setLooping(true);
 		menuSong.setVolume(0.5f, 0.5f);
+
+		font = Typeface.createFromAsset(context.getAssets(), "PrStart.ttf");
+		textPaint.setTypeface(font);
+		textPaint.setARGB(250, 200, 200, 200);
+		textPaint.setTextSize(25);
+		textPaint.setTextAlign(Align.CENTER);
 	}
 
 	public void pauseMusic(int x) {
