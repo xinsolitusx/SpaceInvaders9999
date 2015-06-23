@@ -5,7 +5,12 @@ import android.graphics.Canvas;
 public class Player {
 
 	private float x, y, playerOffSet, missileSpeed = (float) (0.006 * SISingleton.getInstance().height);
-	private Shot playerShot = new PlayerShot();
+	private PlayerShot playerShot = new PlayerShot();
+	private int life = 5;
+	
+	public int getLife(){
+		return this.life;
+	}
 
 	public Player() {
 
@@ -37,6 +42,11 @@ public class Player {
 			}
 		}
 	}
+	
+	public float getX(){
+		
+		return x + playerOffSet;		
+	}	
 	
 }
 

@@ -3,13 +3,14 @@ package com.insolitus.spaceinvaders9999;
 import java.util.Random;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class Levels {
 
 	private Random r = new Random();
 
 	private boolean finnished;
-	private int xMulti, enemyType, enemyShotOne, enemyShotTwo, enemyShotThree, numberOfEnemysFiring;
+	private int xMulti, enemyType, enemyShotOne, enemyShotTwo, enemyShotThree, numberOfEnemysFiring, playerHit;
 	private float yStartMulti, yFinalMulti;
 	private Enemys[] enemysArray = new Enemys[15];
 
@@ -21,6 +22,10 @@ public class Levels {
 		finnished = false;
 		numberOfEnemyFiring();
 		setEnemys();
+	}	
+	
+	public int getPlayerHit() {
+		return playerHit;
 	}
 
 	public boolean startShooting() {
@@ -43,44 +48,62 @@ public class Levels {
 				yFinalMulti -= 0.1f;
 			}
 		}
-	}	
-	
-	public void drawEnemys(Canvas canvas) {
+	}
+
+	public void drawEnemys(Canvas canvas, float x) {
 
 		for (Enemys a : enemysArray) {
 			a.drawEnemy(canvas);
 		}
 
-		if (!startShooting()) {			
+		if (!startShooting()) {
 
 			switch (numberOfEnemysFiring) {
 
 			case 1:
-				enemysArray[enemyShotOne].drawShot(canvas);
-				if (enemysArray[enemyShotOne].missileFinnished()) {
+				if (!enemysArray[enemyShotOne].detectShotCollision(x)) {
+					enemysArray[enemyShotOne].drawShot(canvas);
+				} else {
+					playerHit++;
+				}
+				
+				if (enemysArray[enemyShotOne].getMissileStartLoc()) {
 					numberOfEnemyFiring();
-					enemysArray[enemyShotOne].setMissileFinnished(true);
-				}				
+					enemysArray[enemyShotOne].setMissileRestart(true);
+				}
 				break;
 			case 2:
-				enemysArray[enemyShotOne].drawShot(canvas);
-				enemysArray[enemyShotTwo].drawShot(canvas);
-				if (enemysArray[enemyShotOne].missileFinnished() && enemysArray[enemyShotTwo].missileFinnished()) {
+				if ((!enemysArray[enemyShotOne].detectShotCollision(x)) && (!enemysArray[enemyShotTwo].detectShotCollision(x))) {
+					enemysArray[enemyShotOne].drawShot(canvas);
+					enemysArray[enemyShotTwo].drawShot(canvas);
+				} 
+				if (enemysArray[enemyShotOne].detectShotCollision(x) || enemysArray[enemyShotTwo].detectShotCollision(x)) {
+					Log.i("DVASUTA", "POGODATKx2");
+					playerHit++;
+				}
+				
+				if (enemysArray[enemyShotOne].getMissileStartLoc() && enemysArray[enemyShotTwo].getMissileStartLoc()) {
 					numberOfEnemyFiring();
-					enemysArray[enemyShotOne].setMissileFinnished(true);
-					enemysArray[enemyShotTwo].setMissileFinnished(true);
-				}	
+					enemysArray[enemyShotOne].setMissileRestart(true);
+					enemysArray[enemyShotTwo].setMissileRestart(true);
+				}
 				break;
 			case 3:
-				enemysArray[enemyShotOne].drawShot(canvas);
-				enemysArray[enemyShotTwo].drawShot(canvas);
-				enemysArray[enemyShotThree].drawShot(canvas);
-				if (enemysArray[enemyShotOne].missileFinnished() && enemysArray[enemyShotTwo].missileFinnished() && enemysArray[enemyShotThree].missileFinnished()) {					
+				if ((!enemysArray[enemyShotOne].detectShotCollision(x)) && (!enemysArray[enemyShotTwo].detectShotCollision(x)) && (!enemysArray[enemyShotThree].detectShotCollision(x))) {
+					enemysArray[enemyShotOne].drawShot(canvas);
+					enemysArray[enemyShotTwo].drawShot(canvas);
+					enemysArray[enemyShotThree].drawShot(canvas);
+				} 
+				if (enemysArray[enemyShotOne].detectShotCollision(x) || enemysArray[enemyShotTwo].detectShotCollision(x) ||  enemysArray[enemyShotThree].detectShotCollision(x)) {
+					playerHit++;
+				}
+				
+				if (enemysArray[enemyShotOne].getMissileStartLoc() && enemysArray[enemyShotTwo].getMissileStartLoc() && enemysArray[enemyShotThree].getMissileStartLoc()) {
 					numberOfEnemyFiring();
-					enemysArray[enemyShotOne].setMissileFinnished(true);
-					enemysArray[enemyShotTwo].setMissileFinnished(true);					
-					enemysArray[enemyShotThree].setMissileFinnished(true);
-				}	
+					enemysArray[enemyShotOne].setMissileRestart(true);
+					enemysArray[enemyShotTwo].setMissileRestart(true);
+					enemysArray[enemyShotThree].setMissileRestart(true);
+				}
 				break;
 			}
 		}
@@ -88,7 +111,7 @@ public class Levels {
 
 	private void numberOfEnemyFiring() {
 
-		numberOfEnemysFiring = r.nextInt(3) + 1;		
+		numberOfEnemysFiring = r.nextInt(3) + 1;
 		switch (numberOfEnemysFiring) {
 
 		case 1:

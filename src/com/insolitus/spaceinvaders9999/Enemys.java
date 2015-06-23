@@ -46,11 +46,11 @@ public class Enemys {
 		return this.startLocation;
 	}
 
-	public boolean missileFinnished() {		
-		return enemyShot.isMissileStartLoc();
+	public boolean getMissileStartLoc() {		
+		return enemyShot.getMissileStartLoc();
 	}
-
-	public void setMissileFinnished(boolean restart) {
+	
+	public void setMissileRestart(boolean restart) {
 		enemyShot.setMissileRestart(restart);
 	}
 
@@ -95,4 +95,7 @@ public class Enemys {
 		enemyShot.drawShot(canvas, x + offSetX, finalY);
 	}
 
+	public boolean detectShotCollision(float playerX){
+		return enemyShot.detectShotTargetColl(playerX);
+	}
 }

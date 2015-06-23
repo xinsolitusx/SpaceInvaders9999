@@ -6,9 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -24,7 +24,6 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 	private float x = 0;
 	private boolean moveThreadRunning = false, cancelMoveThread = false, newGame = true;
 
-	private Paint textPaint = new Paint();
 	private Player player = new Player();
 	private Levels level = new Levels();
 
@@ -59,7 +58,7 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 
 			gameView.resume();
 			newGame = false;
-			backKeyPressed = 0;
+			
 
 			if (event.getPointerCount() > 1) {
 				x = event.getX(event.findPointerIndex(event.getPointerId(event.getActionIndex())));
@@ -160,11 +159,14 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 					// Drawing background
 					canvas.drawBitmap(SISingleton.getInstance().background, 0, 0, null);
 
-					// Level drawing
-					level.drawEnemys(canvas);
-
 					// Players spaceship
 					player.drawPlayer(canvas);
+					
+					// Level drawing
+					level.drawEnemys(canvas, player.getX());
+					
+					canvas.drawText(player.getLife()-level.getPlayerHit() + "", 30, 30, SISingleton.getInstance().textPaint);
+					
 					if (!level.startShooting()) {
 						player.drawShot(canvas);
 					} else {
@@ -179,57 +181,7 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 					
 					// Players spaceship
 					player.drawPlayer(canvas);
-				}
-
-				/*
-				 * if (!missileStartLoc){ holdPlayersY = (float)
-				 * (0.85*height-playerShip.getHeight()/2) - missile.getHeight();
-				 * } else{ holdPlayersX = width/2 + playersShipOffset -
-				 * missile.getWidth()/2; holdPlayersY = (float)
-				 * (0.85*height-playerShip.getHeight()/2) - missile.getHeight();
-				 * missileStartLoc = false; }
-				 * 
-				 * if (holdPlayersY - missileLocation >= 0){
-				 * canvas.drawBitmap(missile,holdPlayersX, holdPlayersY -
-				 * missileLocation, null); missileLocation += missileSpeed; }
-				 * else { missileLocation = 0; missileStartLoc = true;
-				 * 
-				 * }
-				 */
-
-				/*
-				 * drawMissile(canvas, holdPlayersX, holdPlayersY);
-				 * 
-				 * drawMissile(canvas, holdPlayersX, holdPlayersY);
-				 * 
-				 * drawMissile(canvas, holdPlayersX, holdPlayersY);
-				 */
-
-				/*
-				 * if (x != 0 && y != 0) {
-				 * 
-				 * 
-				 * canvas.drawBitmap(playerShip, x - playerShip.getWidth() / 2,
-				 * y - playerShip.getHeight() / 2, null); } if
-				 * (playersShipOffset != 0 && sY != 0) {
-				 * 
-				 * canvas.drawBitmap(enemyShip, playersShipOffset -
-				 * enemyShip.getWidth() / 2, sY - enemyShip.getHeight() / 2,
-				 * null); } if (fX != 0 && fY != 0) {
-				 * 
-				 * canvas.drawBitmap(missile, fX - (missile.getWidth() / 2), fY
-				 * - (playerShip.getHeight() / 2) - missile.getHeight() - aY,
-				 * null); canvas.drawBitmap(playerShip, fX -
-				 * playerShip.getWidth() / 2, fY - playerShip.getHeight() / 2,
-				 * null); if (fX >= playersShipOffset - enemyShip.getWidth() / 2
-				 * && fX <= playersShipOffset + enemyShip.getWidth() / 2){ if
-				 * (fY - (playerShip.getHeight() / 2) - missile.getHeight() - aY
-				 * <= sY + enemyShip.getHeight() / 2 ){ if (explosion != 0){
-				 * sp.play(explosion, 1, 1, 0, 0, 1); } dX = dY = aX = aY =
-				 * scaledX = scaledY = fX = fY = playersShipOffset = sY = 0; } }
-				 * 
-				 * } aY += scaledY;
-				 */
+				}				
 
 				ourHolder.unlockCanvasAndPost(canvas);
 			}
@@ -282,7 +234,7 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 		// TODO Auto-generated method stub
 		super.onResume();
 		SISingleton.getInstance().resumeMusic(2);
-		gameView.resume();
+		gameView.resume();		
 		backKeyPressed = 0;
 	}
 }

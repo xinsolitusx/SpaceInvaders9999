@@ -1,23 +1,26 @@
 package com.insolitus.spaceinvaders9999;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class Shot {
 
 	protected boolean missileStartLoc = true;
 	private boolean missileRestart = true;
 	protected float x, y, missileOffset = 0, missileSpeed = (float) (0.006 * SISingleton.getInstance().height);
+	private float playerY = (float) (0.85 * SISingleton.getInstance().height - SISingleton.getInstance().playerShip.getHeight() / 2);
 
 	public void setMissileRestart(boolean restart) {
 		this.missileRestart = restart;
 	}
-
-	public boolean isMissileStartLoc() {
+	
+	public boolean getMissileStartLoc() {
 		return missileStartLoc;
 	}
 
 	public void drawShot(Canvas canvas, float shipX, float shipY) {
 
+		
 		// Players shoot
 		if (missileStartLoc && missileRestart) {
 
@@ -37,7 +40,26 @@ public class Shot {
 			} else {
 				missileOffset = 0;
 				missileStartLoc = true;
+			}			
+		}
+
+		
+	}
+
+	public boolean detectShotTargetColl(float playerX) {
+
+		// Missile passed playerShip Y axis
+		if ((y + missileOffset + SISingleton.getInstance().enemyMissile.getHeight()) >= playerY) {
+			// Missile between playerShip X axis
+			if (((x + SISingleton.getInstance().enemyMissile.getWidth() <= (playerX + SISingleton.getInstance().playerShip.getWidth())) && (x > playerX))) {
+				missileOffset = 0;
+				missileStartLoc = true;
+				return true;
+			} else {
+				return false;
 			}
+		} else {
+			return false;
 		}
 	}
 
