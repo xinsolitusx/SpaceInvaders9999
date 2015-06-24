@@ -2,13 +2,23 @@ package com.insolitus.spaceinvaders9999;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class Enemys {
 
-	private boolean startLocation, left, right;
+	private boolean startLocation = true, left = false, right = false, killed = false;
 	private float x, startY, finalY, offSetX, offSetY;
+	private int index;
 	Bitmap enemyType;
 	private Shot enemyShot = new Shot();
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
 
 	public void setLocation(float xPos, float yStartPos, float yFinalPos, int eType) {
 
@@ -17,10 +27,15 @@ public class Enemys {
 		this.finalY = yFinalPos;
 		offSetX = 0;
 		offSetY = 0;
-		startLocation = true;
-		left = false;
-		right = false;
 		setEnemyType(eType);
+	}
+	
+	public boolean isKilled() {
+		return killed;
+	}
+
+	public void setKilled(boolean killed) {
+		this.killed = killed;
 	}
 
 	private void setEnemyType(int x) {
@@ -41,19 +56,24 @@ public class Enemys {
 			break;
 		}
 	}
-
-	public boolean startAllocationFinnished() {
-		return this.startLocation;
-	}
+	
 
 	public boolean getMissileStartLoc() {		
 		return enemyShot.getMissileStartLoc();
 	}
-	
+	  
 	public void setMissileRestart(boolean restart) {
 		enemyShot.setMissileRestart(restart);
 	}
+	
+	public float currentYLoc(){
+		return this.finalY;
+	}
 
+	public float currentXLoc(){
+		return this.x + this.offSetX;
+	}
+	
 	public void drawEnemy(Canvas canvas) {
 
 		if (startLocation) {
@@ -61,6 +81,7 @@ public class Enemys {
 			if ((startY + offSetY) < finalY) {
 				canvas.drawBitmap(enemyType, x, startY + offSetY, null);
 			} else {
+				SISingleton.getInstance().setStartShooting(true);
 				startLocation = false;
 				left = true;
 				canvas.drawBitmap(enemyType, x, finalY, null);

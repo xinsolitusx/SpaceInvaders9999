@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.SignalStrength;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -58,7 +59,6 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 
 			gameView.resume();
 			newGame = false;
-			
 
 			if (event.getPointerCount() > 1) {
 				x = event.getX(event.findPointerIndex(event.getPointerId(event.getActionIndex())));
@@ -156,32 +156,56 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 				Canvas canvas = ourHolder.lockCanvas();
 
 				if (!newGame) {
+
+					if (player.getLife() > 0) {
+						// Drawing background
+						canvas.drawBitmap(SISingleton.getInstance().background, 0, 0, null);
+						if (!level.isFinnished()) {
+							// Players spaceship
+							player.drawPlayer(canvas);
+
+							// Level drawing
+							level.drawEnemys(canvas, player.getX());
+
+							if (level.getPlayerHit()) {
+								level.setPlayerHit(false);
+								player.setLife();
+							}
+
+							canvas.drawText(player.getLife() + " ♥", SISingleton.getInstance().width - SISingleton.getInstance().width / 9, (float) (0.04 * SISingleton.getInstance().height),
+									SISingleton.getInstance().textPaint);
+							canvas.drawText(player.getHighscore() + "", SISingleton.getInstance().width / 9, (float) (0.04 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
+
+							if (SISingleton.getInstance().isStartShooting()) {
+								if (player.getHits() < 15) {
+									player.drawShot(canvas);
+									player.detectShotTargetColl(level.getEnemysArray());
+									player.setHighscore();
+								}
+							} else {
+								canvas.drawText("GET READY !!!", SISingleton.getInstance().width / 2, (float) (0.45 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
+							}
+						} else {
+							player.setHits(0);
+							level = new Levels();
+						}
+					} else {						
+						canvas.drawBitmap(SISingleton.getInstance().background, 0, 0, null);
+						canvas.drawText("GAME OVER :[", SISingleton.getInstance().width / 2, (float) (0.3 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
+						canvas.drawText("HIGHSCORE", SISingleton.getInstance().width / 2, (float) (0.4 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
+						canvas.drawText(player.getHighscore() + "", SISingleton.getInstance().width / 2, (float) (0.5 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
+					}
+
+				} else {
+
 					// Drawing background
 					canvas.drawBitmap(SISingleton.getInstance().background, 0, 0, null);
 
-					// Players spaceship
-					player.drawPlayer(canvas);
-					
-					// Level drawing
-					level.drawEnemys(canvas, player.getX());
-					
-					canvas.drawText(player.getLife()-level.getPlayerHit() + "", 30, 30, SISingleton.getInstance().textPaint);
-					
-					if (!level.startShooting()) {
-						player.drawShot(canvas);
-					} else {
-						canvas.drawText("GET READY !!!", SISingleton.getInstance().width / 2, (float) (0.45 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
-					}
-				} else {
-					
-					// Drawing background
-					canvas.drawBitmap(SISingleton.getInstance().background, 0, 0, null);
-					
 					canvas.drawBitmap(SISingleton.getInstance().instructions, 0, 0, null);
-					
+
 					// Players spaceship
 					player.drawPlayer(canvas);
-				}				
+				}
 
 				ourHolder.unlockCanvasAndPost(canvas);
 			}
@@ -189,11 +213,22 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 
 	}
 
+	private void playerDeath() {
+		
+		gameView.pause();
+		Intent openMenuActivity = new Intent(SpaceInvSurface.this, GameMenu.class);
+		startActivity(openMenuActivity);
+		finish();
+
+	}
+
 	@Override
 	public void onBackPressed() {
-
+		
+		
 		backKeyPressed++;
 		if (backKeyPressed == 1) {
+
 			gameView.pause();
 			AlertDialog alertbox = new AlertDialog.Builder(this).setMessage("Do you want to return to menu and lose your progress?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
@@ -234,7 +269,7 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 		// TODO Auto-generated method stub
 		super.onResume();
 		SISingleton.getInstance().resumeMusic(2);
-		gameView.resume();		
+		gameView.resume();
 		backKeyPressed = 0;
 	}
 }

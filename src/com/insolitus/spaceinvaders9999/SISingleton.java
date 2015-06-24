@@ -21,6 +21,17 @@ public class SISingleton {
 	public final float height, width, shotMaxRange, emptySpace;
 	public final Bitmap playerShip, background, missile, enemyMissile, enemyShipOne, enemyShipTwo, enemyShipThree, enemyShipFour, instructions;
 	public Paint textPaint = new Paint();
+	private boolean startShooting = false;
+	
+	
+
+	public boolean isStartShooting() {
+		return startShooting;
+	}
+
+	public void setStartShooting(boolean startShooting) {
+		this.startShooting = startShooting;
+	}
 
 	private int shotCount = 1, loopSongLenght, menuSongLenght;
 
@@ -130,7 +141,7 @@ public class SISingleton {
 		font = Typeface.createFromAsset(context.getAssets(), "PrStart.ttf");
 		textPaint.setTypeface(font);
 		textPaint.setARGB(250, 200, 200, 200);
-		textPaint.setTextSize(25);
+		textPaint.setTextSize(width/25);
 		textPaint.setTextAlign(Align.CENTER);
 	}
 
