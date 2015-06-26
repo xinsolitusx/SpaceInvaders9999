@@ -17,6 +17,13 @@ public class Player {
 		if (playerShot.isHit()){
 			highscore+=100;
 			playerShot.setHit(false);
+			if (highscore%2500 == 0){
+				SISingleton.getInstance().incPlayerMissileSpeed(1.1f);
+			}
+			if (highscore%5000 == 0){
+				SISingleton.getInstance().sp.play(SISingleton.getInstance().mSoundPoolMap.get(5), 0.2f, 0.2f, 1, 0, 1f); 
+				life++;
+			}
 		}
 	}
 
@@ -30,6 +37,9 @@ public class Player {
 	
 	public void setLife() {
 		this.life--;
+		if (life == 0){
+			SISingleton.getInstance().sp.play(SISingleton.getInstance().mSoundPoolMap.get(6), 0.2f, 0.2f, 1, 0, 1f); 
+		}
 	}
 
 	public int getHits(){
@@ -71,8 +81,7 @@ public class Player {
 		}
 	}
 	
-	public float getX(){
-		
+	public float getX(){		
 		return x + playerOffSet;		
 	}	
 	

@@ -2,25 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/menu"
-    android:orientation="vertical" >
+    android:background="@drawable/menu" >
 
     <Button
         android:id="@+id/startNewGamebtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/newgamebutton"
         android:layout_gravity="center_vertical"
-         />
+        android:background="@drawable/newgamebutton" />
 
     <Button
         android:id="@+id/highScorebtn"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/startNewGamebtn"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:background="@drawable/highscorebutton" />
+
+    <Button
+        android:id="@+id/exitGamebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/highScorebtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/exitbutton" />
 
 </RelativeLayout>

@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
-import android.telephony.SignalStrength;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -34,6 +32,8 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 		gameView = new SpaceInvSurfaceView(this);
 		gameView.setOnTouchListener(this);
 		setContentView(gameView);
+		SISingleton.getInstance().setEnemyMissileSpeed((float) (0.005 * SISingleton.getInstance().height));
+		SISingleton.getInstance().setPlayerMissileSpeed((float) (0.005 * SISingleton.getInstance().height));
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
@@ -112,7 +112,7 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 		}.start();
 	}
 
-	public class SpaceInvSurfaceView extends SurfaceView implements Runnable {
+	private class SpaceInvSurfaceView extends SurfaceView implements Runnable {
 
 		SurfaceHolder ourHolder;
 		Thread ourThread = null;
@@ -155,27 +155,26 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 
 				Canvas canvas = ourHolder.lockCanvas();
 
+				//Draw everything
 				if (!newGame) {
 
 					if (player.getLife() > 0) {
 						// Drawing background
 						canvas.drawBitmap(SISingleton.getInstance().background, 0, 0, null);
+
+						// Drawing everything if level isn't finished
 						if (!level.isFinnished()) {
-							// Players spaceship
-							player.drawPlayer(canvas);
 
-							// Level drawing
-							level.drawEnemys(canvas, player.getX());
-
-							if (level.getPlayerHit()) {
-								level.setPlayerHit(false);
-								player.setLife();
-							}
-
+							// Draw life and score
 							canvas.drawText(player.getLife() + " ♥", SISingleton.getInstance().width - SISingleton.getInstance().width / 9, (float) (0.04 * SISingleton.getInstance().height),
 									SISingleton.getInstance().textPaint);
-							canvas.drawText(player.getHighscore() + "", SISingleton.getInstance().width / 9, (float) (0.04 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
+							canvas.drawText(player.getHighscore() + "", (float) (SISingleton.getInstance().width / 8.5), (float) (0.04 * SISingleton.getInstance().height),
+									SISingleton.getInstance().textPaint);
 
+							// Players spaceship
+							player.drawPlayer(canvas);							
+
+							// Start shooting after enemy arrival finished
 							if (SISingleton.getInstance().isStartShooting()) {
 								if (player.getHits() < 15) {
 									player.drawShot(canvas);
@@ -185,22 +184,38 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 							} else {
 								canvas.drawText("GET READY !!!", SISingleton.getInstance().width / 2, (float) (0.45 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
 							}
+
+							// Level drawing
+							level.drawEnemys(canvas, player.getX());
+
+							// Setting player life if hit
+							if (level.getPlayerHit()) {
+								level.setPlayerHit(false);
+								player.setLife();
+							}	
+
+						// Adjust enemy, generate new level, etc. when player clears current wave
 						} else {
+							SISingleton.getInstance().incEnemyMissileSpeed(1.1f);
 							player.setHits(0);
 							level = new Levels();
 						}
-					} else {						
+					
+					// Game over
+					} else {
 						canvas.drawBitmap(SISingleton.getInstance().background, 0, 0, null);
 						canvas.drawText("GAME OVER :[", SISingleton.getInstance().width / 2, (float) (0.3 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
-						canvas.drawText("HIGHSCORE", SISingleton.getInstance().width / 2, (float) (0.4 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
-						canvas.drawText(player.getHighscore() + "", SISingleton.getInstance().width / 2, (float) (0.5 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
+						canvas.drawText("PLEASE WAIT", SISingleton.getInstance().width / 2, (float) (0.5 * SISingleton.getInstance().height), SISingleton.getInstance().textPaint);
+						playerDeath();
 					}
 
+				//Draw instructions before player touches screen
 				} else {
 
 					// Drawing background
 					canvas.drawBitmap(SISingleton.getInstance().background, 0, 0, null);
 
+					// Drawing instructions
 					canvas.drawBitmap(SISingleton.getInstance().instructions, 0, 0, null);
 
 					// Players spaceship
@@ -214,23 +229,23 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 	}
 
 	private void playerDeath() {
-		
-		gameView.pause();
-		Intent openMenuActivity = new Intent(SpaceInvSurface.this, GameMenu.class);
-		startActivity(openMenuActivity);
+
+		Intent launchNextActivity;
+		launchNextActivity = new Intent(SpaceInvSurface.this, GameOver.class);
+		launchNextActivity.putExtra("HighScore", player.getHighscore());
+		startActivity(launchNextActivity);
 		finish();
 
 	}
 
 	@Override
 	public void onBackPressed() {
-		
-		
+
 		backKeyPressed++;
 		if (backKeyPressed == 1) {
 
 			gameView.pause();
-			AlertDialog alertbox = new AlertDialog.Builder(this).setMessage("Do you want to return to menu and lose your progress?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(this).setMessage("Do you want to return to menu and lose your progress?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
 				// do something when the button is clicked
 				@Override

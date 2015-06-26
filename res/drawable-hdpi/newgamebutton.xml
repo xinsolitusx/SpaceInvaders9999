@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/buttons_ngp" android:state_pressed="true"></item>
-    <item android:drawable="@drawable/buttons_ngp" android:state_focused="true"></item>
-    <item android:drawable="@drawable/buttons_ng"></item>
+    <item android:drawable="@drawable/newgamepressed" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/newgamepressed" android:state_focused="true"></item>
+    <item android:drawable="@drawable/newgame"></item>
 
 </selector>

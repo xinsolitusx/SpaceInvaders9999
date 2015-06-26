@@ -49,10 +49,13 @@ public class Splash extends Activity {
 		// after executing the code in the thread
 		@Override
 		protected void onPostExecute(Void result) {
-			Intent openMenuActivity = new Intent(Splash.this, GameMenu.class);
-			startActivity(openMenuActivity);
-			// close this activity
-			finish();
+			Intent launchNextActivity;
+        	launchNextActivity = new Intent(Splash.this, GameMenu.class);
+        	launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        	launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);                  
+        	launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        	startActivity(launchNextActivity);
+        	finish();
 		}
 	}
 

@@ -9,6 +9,8 @@ import android.widget.Button;
 public class GameMenu extends Activity {
 
 	Button startNewGame;
+	Button highScore;
+	Button exitGame;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,14 +21,39 @@ public class GameMenu extends Activity {
 		startNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
 			public void onClick(View v) {
-            	Intent openMenuActivity = new Intent(GameMenu.this, SpaceInvSurface.class);
-				startActivity(openMenuActivity);
-				finish();
+            	SISingleton.getInstance().sp.play(SISingleton.getInstance().mSoundPoolMap.get(0), 0.5f, 0.5f, 1, 0, 1f); 
+            	Intent launchNextActivity;
+            	launchNextActivity = new Intent(GameMenu.this, SpaceInvSurface.class);
+            	launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            	launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); 
+            	startActivity(launchNextActivity);
+            	finish();
+            }
+        });
+		Button highScore = (Button) findViewById(R.id.highScorebtn);
+		highScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+			public void onClick(View v) {
+            	SISingleton.getInstance().sp.play(SISingleton.getInstance().mSoundPoolMap.get(0), 0.5f, 0.5f, 1, 0, 1f); 
+            	Intent launchNextActivity;
+            	launchNextActivity = new Intent(GameMenu.this, HighScoreSQLView.class);
+            	launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            	launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            	startActivity(launchNextActivity);
+            	finish();
+            }
+        });
+		Button exitGame = (Button) findViewById(R.id.exitGamebtn);
+		exitGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+			public void onClick(View v) {    
+            	SISingleton.getInstance().sp.play(SISingleton.getInstance().mSoundPoolMap.get(0), 0.5f, 0.5f, 1, 0, 1f); 
+				finish();				
             }
         });
 
-	}
-	
+	}		
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub

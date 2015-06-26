@@ -3,15 +3,14 @@ package com.insolitus.spaceinvaders9999;
 import java.util.Random;
 
 import android.graphics.Canvas;
-import android.util.Log;
 
 public class Levels {
 
 	private Random r = new Random();
 
-	private boolean finnished, playerHit;
-	private int xMulti, enemyType, enemyShotOne, enemyShotTwo, enemyShotThree, numberOfEnemysFiring;
-	private float yStartMulti, yFinalMulti;
+	private boolean finnished = false, playerHit = false;
+	private int xMulti = 0, enemyType, enemyShotOne, enemyShotTwo, enemyShotThree, numberOfEnemysFiring;
+	private float yStartMulti = 0.1f, yFinalMulti = 0.3f;
 	private Enemys[] enemysArray = new Enemys[15];
 	private int[] enemysTemp = new int[15];
 
@@ -19,21 +18,13 @@ public class Levels {
 		return finnished;
 	}
 
-	public Levels() {
-
-		xMulti = 0;
-		yStartMulti = 0.1f;
-		yFinalMulti = 0.3f;
-		finnished = false;
-		playerHit = false;
-		
+	public Levels() {		
 		setEnemys();
 		numberOfEnemyFiring();
 		SISingleton.getInstance().setStartShooting(false);
 	}
 
 	public Enemys[] getEnemysArray() {
-
 		return this.enemysArray;
 	}
 
