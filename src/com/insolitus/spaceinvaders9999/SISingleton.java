@@ -1,5 +1,6 @@
 package com.insolitus.spaceinvaders9999;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -10,6 +11,7 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.util.SparseArray;
 
+@SuppressLint("UseSparseArrays")
 public class SISingleton {
 
 	private static int SOUNDPOOLSND_BUTTTON = 0;
@@ -149,10 +151,10 @@ public class SISingleton {
 		emptySpace = (float) ((0.82 * width - 5 * enemyShipOne.getWidth()) / 4);
 
 		// Enemy missile speed
-		enemyMissileSpeed = (float) (0.006 * height);
+		enemyMissileSpeed = (float) (0.005 * height);
 
 		// Player missile speed
-		playerMissileSpeed = (float) (0.006 * height);
+		playerMissileSpeed = (float) (0.005 * height);
 
 		// Sounds
 		sp = new SoundPool(7, AudioManager.STREAM_MUSIC, 0);

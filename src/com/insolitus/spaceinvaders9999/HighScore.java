@@ -42,7 +42,7 @@ public class HighScore {
 
 	public HighScore(Context c) {
 		ourContext = c;
-		//ourContext.deleteDatabase(DATABASE_NAME);
+		//ourContext.deleteDatabase(DATABASE_NAME); //Uncomment to delete database
 	}
 
 	public HighScore open() {

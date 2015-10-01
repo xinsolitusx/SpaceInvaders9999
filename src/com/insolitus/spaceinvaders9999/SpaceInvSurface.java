@@ -32,7 +32,7 @@ public class SpaceInvSurface extends Activity implements OnTouchListener {
 		gameView = new SpaceInvSurfaceView(this);
 		gameView.setOnTouchListener(this);
 		setContentView(gameView);
-		SISingleton.getInstance().setEnemyMissileSpeed((float) (0.005 * SISingleton.getInstance().height));
+		SISingleton.getInstance().setEnemyMissileSpeed((float) (0.006 * SISingleton.getInstance().height));
 		SISingleton.getInstance().setPlayerMissileSpeed((float) (0.005 * SISingleton.getInstance().height));
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
